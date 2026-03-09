@@ -34,13 +34,14 @@ public class UsuarioController {
     }
 
 
+    //crear
    @PostMapping
    //@ResponseStatus(HttpStatus.CREATED)
    public ResponseEntity<?> crear(@RequestBody Usuario usuario){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.guardar(usuario));
    }
 
-
+    //editar
    @PutMapping("/{id}")
     public ResponseEntity<?> editar(@RequestBody Usuario usuario, @PathVariable Long id){
        Optional<Usuario> o = service.porId(id);
@@ -55,6 +56,8 @@ public class UsuarioController {
        return ResponseEntity.notFound().build();
    }
 
+
+   //eliminar
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id){
         Optional<Usuario> o  = service.porId(id);
