@@ -1,6 +1,6 @@
 package org.arreortua.springcloud.msvc.cursos.msvc_cursos.services;
 
-import org.arreortua.springcloud.msvc.cursos.msvc_cursos.entity.Curso;
+import org.arreortua.springcloud.msvc.cursos.msvc_cursos.models.entity.Curso;
 import org.arreortua.springcloud.msvc.cursos.msvc_cursos.repositories.CursoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package org.arreortua.springcloud.msvc.cursos.msvc_cursos.services;
 
-import org.arreortua.springcloud.msvc.cursos.msvc_cursos.entity.Curso;
+import org.arreortua.springcloud.msvc.cursos.msvc_cursos.models.entity.Curso;
 
 import java.util.List;
 import java.util.Optional;

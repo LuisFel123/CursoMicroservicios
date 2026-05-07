@@ -1,7 +1,7 @@
 package org.arreortua.springcloud.msvc.cursos.msvc_cursos.controllers;
 
 import jakarta.validation.Valid;
-import org.arreortua.springcloud.msvc.cursos.msvc_cursos.entity.Curso;
+import org.arreortua.springcloud.msvc.cursos.msvc_cursos.models.entity.Curso;
 import org.arreortua.springcloud.msvc.cursos.msvc_cursos.services.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
