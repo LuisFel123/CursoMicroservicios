@@ -41,4 +41,16 @@ public class UsuarioServiceImpl implements  UsuarioService{
         repository.deleteById(id);
 
     }
+
+    @Override
+    public Optional<Usuario> porEmail(String email) {
+        return repository.porEmail(email);
+    }
+
+    @Override
+    public boolean existePorEmail(String email) {
+        return repository.existsByEmail(email);
+    }
+
+
 }

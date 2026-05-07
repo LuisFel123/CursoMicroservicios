@@ -10,10 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.naming.Binding;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class UsuarioController {
@@ -43,9 +40,16 @@ public class UsuarioController {
    @PostMapping
    //@ResponseStatus(HttpStatus.CREATED)
    public ResponseEntity<?> crear(@Valid @RequestBody Usuario usuario, BindingResult result){
-        if(result.hasErrors()){
-            return validar(result);
+
+       if(result.hasErrors()){
+           return validar(result);
+       }
+
+        if(!usuario.getEmail().isEmpty() && service.existePorEmail(usuario.getEmail())){
+            return ResponseEntity.badRequest().body(Collections.singletonMap("mensaje","Ya existe un usuario con ese correo electronico"));
         }
+
+
         return ResponseEntity.status(HttpStatus.CREATED).body(service.guardar(usuario));
         
    }
@@ -54,12 +58,20 @@ public class UsuarioController {
     //editar
    @PutMapping("/{id}")
     public ResponseEntity<?> editar(@Valid @RequestBody Usuario usuario, BindingResult result,@PathVariable Long id){
-       if(result.hasErrors()){
+
+
+
+        if(result.hasErrors()){
            return validar(result);
        }
         Optional<Usuario> o = service.porId(id);
        if(o.isPresent()){
            Usuario usuarioOb  = o.get();
+
+           if(!usuario.getEmail().isEmpty() && !usuario.getEmail().equalsIgnoreCase(usuarioOb.getEmail()) && service.existePorEmail(usuario.getEmail())){
+               return ResponseEntity.badRequest().body(Collections.singletonMap("mensaje","Ya existe un usuario con ese correo electronico"));
+           }
+
            usuarioOb.setNombre(usuario.getNombre());
            usuarioOb.setEmail(usuario.getEmail());
            usuarioOb.setPassword(usuario.getPassword());
