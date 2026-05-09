@@ -28,21 +28,27 @@ public class CursoServiceImpl implements CursoService{
     }
 
     @Override
+    @Transactional
     public Optional<Curso> porId(Long id) {
         return repository.findById(id);
     }
 
     @Override
+    @Transactional
     public Curso guardar(Curso curso) {
         return repository.save(curso);
     }
 
     @Override
+    @Transactional
     public void eliminar(Long id) {
         repository.deleteById(id);
     }
 
+
+    //asignar un usuario a un curso
     @Override
+    @Transactional
     public Optional<Usuario> asignarUsuario(Usuario usuario, Long cursoId) {
         Optional<Curso> o = repository.findById(cursoId);
         if(o.isPresent()){
@@ -59,25 +65,42 @@ public class CursoServiceImpl implements CursoService{
         return Optional.empty();
     }
 
+
+    //creamos un usuario y lo asignamos al curso
     @Override
+    @Transactional
     public Optional<Usuario> crearUsuario(Usuario usuario, Long cursoId) {
         Optional<Curso> o = repository.findById(cursoId);
         if(o.isPresent()){
-            Usuario usuarioMsvc  = client.crear(usuario);
+            Usuario usuarioNuevoMsvc  = client.crear(usuario);
+            Curso curso= o.get();
+
+            CursoUsuario cursoUsuario =  new CursoUsuario();
+            cursoUsuario.setUsuarioId(usuarioNuevoMsvc.getId());
+
+            curso.addCursoUsuario(cursoUsuario);
+            repository.save(curso);
+            return  Optional.of(usuarioNuevoMsvc);
+        }
+        return Optional.empty();
+    }
+
+    //eliminar un usuario con curso asginado
+    @Override
+    @Transactional
+    public Optional<Usuario> eliminarUsuario(Usuario usuario, Long cursoId) {
+        Optional<Curso> o = repository.findById(cursoId);
+        if(o.isPresent()){
+            Usuario usuarioMsvc  = client.detalle(usuario.getId());
             Curso curso= o.get();
 
             CursoUsuario cursoUsuario =  new CursoUsuario();
             cursoUsuario.setUsuarioId(usuarioMsvc.getId());
 
-            curso.addCursoUsuario(cursoUsuario);
+            curso.removeCursoUsuario(cursoUsuario);
             repository.save(curso);
             return  Optional.of(usuarioMsvc);
         }
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Usuario> eliminarUsuario(Usuario usuario, Long cursoId) {
         return Optional.empty();
     }
 
